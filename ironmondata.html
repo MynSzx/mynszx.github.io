@@ -253,7 +253,14 @@ for (let i = 0; i < pokemonList.length; i++) {
 	flipCardInner.appendChild(flipCardBack);
 
 	var image = document.createElement("img");
-	image.src = imgUrl + pokemonList[i].split(" ")[0].toLowerCase() + ".png";
+	if (pokemonList[i].split(" ")[1] == "->") 
+	{
+		image.src = imgUrl + pokemonList[i].split(" ")[2].toLowerCase() + ".png";
+	}
+	else
+	{
+		image.src = imgUrl + pokemonList[i].split(" ")[0].toLowerCase() + ".png";
+	}
 	image.width = 200;
 	image.height = 200;
 	flipCardFront.appendChild(image);
