@@ -10,12 +10,18 @@ body
 div
 {
 	display:inline-block;
+	border-radius: 25px;
+}
+img
+{
+ margin-top:50px;
 }
 .flip-card {
   background-color: transparent;
   width: 200px;
   height: 200px;
-  border: 3px solid black;
+  border: 3px solid transparent;
+  
   perspective: 1000px;
 }
 
@@ -42,13 +48,14 @@ div
 }
 
 .flip-card-front {
-  background-color: #bbb;
+  background-color: #F4F6F7;
   color: black;
+  text-align:center;
 }
 
 .flip-card-back {
-text-align:center;
-  background-color: dodgerblue;
+  text-align:center;
+  background-color: gray;
   color: white;
   transform: rotateY(180deg);
 }
@@ -59,7 +66,7 @@ text-align:center;
 <body>
 
 <script>
-// credit to Valhallan597
+// credits to Valhallan597
 var data = `Bulbasaur Evos - Top 10 (69.3%): Nidorino(8.0%), Nidorina(8.0%), Bayleef(7.7%), Grovyle(7.7%), Arbok(7.6%), Sunflora(6.9%), Haunter(6.6%), Weepinbell(5.6%), Dustox(5.6%), Ariados(5.5%)
 Ivysaur Evos - Top 10 (69.3%): Sceptile(11.2%), Meganium(8.7%), Crobat(8.1%), Bellossom(7.0%), Muk(6.9%), Weezing(6.5%), Cacturne(5.9%), Shiftry(5.3%), Cradily(5.0%), Exeggutor(4.6%)
 Charmander Evos - Top 9 (100.0%): Magby(20.2%), Quilava(19.9%), Ponyta(17.6%), Magcargo(17.4%), Combusken(15.2%), Growlithe(6.5%), Houndour(1.5%), Camerupt(1.3%), Torkoal(0.5%)
@@ -254,18 +261,26 @@ for (let i = 0; i < pokemonList.length; i++) {
 	flipCardInner.appendChild(flipCardBack);
 
 	var image = document.createElement("img");
-	if (pokemonList[i].split(" ")[1] == "->") 
-	{
-		image.src = imgUrl + pokemonList[i].split(" ")[2].toLowerCase() + ".png";
-	}
-	else
-	{
-		image.src = imgUrl + pokemonList[i].split(" ")[0].toLowerCase() + ".png";
-	}
-	image.width = 200;
-	image.height = 200;
+	image.src = imgUrl + pokemonList[i].split(" ")[0].toLowerCase() + ".png";
+	image.width = 84;	
+	image.height = 84;
 	flipCardFront.appendChild(image);
+		
+	if (pokemonList[i].split(" ")[1] == "->") 
+	{		
+		var imageArrow = document.createElement("img");
+		imageArrow.src = "arrow.png";
+		imageArrow.width = 16;
+		imageArrow.height = 84;
+		flipCardFront.appendChild(imageArrow);
 	
+		var imageSpecial = document.createElement("img");
+		imageSpecial.src = imgUrl + pokemonList[i].split(" ")[2].toLowerCase() + ".png";
+		imageSpecial.width = 84;
+		imageSpecial.height = 84;
+		flipCardFront.appendChild(imageSpecial);
+	}
+		
 	let vals = pokemonList[i].split(":");
 	let perc = vals[1].split(",");
 	
