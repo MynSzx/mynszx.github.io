@@ -59,12 +59,55 @@ img
   color: white;
   transform: rotateY(180deg);
 }
+
+.letters
+{
+	height:50px;
+	width:50px;
+	background-color:white;
+	text-align:center;
+	vertical-align:middle;
+	line-height: 50px;
+	border-radius: 25px;
+}
+.letters:hover {
+  background-color: RoyalBlue;
+}
 </style>
 </head>
 
 
 <body>
-
+<div>
+<button class="letters" type="button" onclick="OnSort(this)" id="0"> ALL </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="a"> A </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="b"> B </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="c"> C </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="d"> D </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="e"> E </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="f"> F </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="g"> G </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="h"> H </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="i"> I </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="j"> J </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="k"> K </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="l"> L </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="m"> M </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="n"> N </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="o"> O </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="p"> P </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="q"> Q </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="r"> R </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="s"> S </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="t"> T </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="u"> U </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="v"> V </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="w"> W </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="x"> X </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="y"> Y </button>
+<button class="letters" type="button" onclick="OnSort(this)" id="z"> Z </button>
+</div>
+<br>
 <script>
 // credits to Valhallan597
 var data = `Bulbasaur Evos - Top 10 (69.3%): Nidorino(8.0%), Nidorina(8.0%), Bayleef(7.7%), Grovyle(7.7%), Arbok(7.6%), Sunflora(6.9%), Haunter(6.6%), Weepinbell(5.6%), Dustox(5.6%), Ariados(5.5%)
@@ -252,6 +295,7 @@ for (let i = 0; i < pokemonList.length; i++) {
 	let flipCardBack = document.createElement('div')
 
 	flipCard.classList.add('flip-card');
+	flipCard.id = pokemonList[i].split(" ")[0].toLowerCase();
 	flipCardInner.classList.add('flip-card-inner');
 	flipCardFront.classList.add('flip-card-front');
 	flipCardBack.classList.add('flip-card-back');
@@ -268,6 +312,8 @@ for (let i = 0; i < pokemonList.length; i++) {
 		
 	if (pokemonList[i].split(" ")[1] == "->") 
 	{		
+		flipCard.id = pokemonList[i].split(" ")[0].toLowerCase() + "-" + pokemonList[i].split(" ")[2].toLowerCase();
+		
 		var imageArrow = document.createElement("img");
 		imageArrow.src = "arrow.png";
 		imageArrow.width = 16;
@@ -293,6 +339,21 @@ for (let i = 0; i < pokemonList.length; i++) {
 	}	
 	document.body.appendChild(flipCard)
 }
+var divs = document.getElementsByClassName('flip-card');
+const listitems = [];
+for (i = 0; i < divs.length; i++) {
+	listitems.push(divs.item(i));
+}
+function OnSort(el)
+{
+	for (i = 0; i < listitems.length; i++) {
+		if (listitems[i].id[0] != el.id && el.id != 0)
+			listitems[i].style = "display: none;";
+		else
+			listitems[i].style = "";
+	}
+}
+
 </script>
 
 </body>
