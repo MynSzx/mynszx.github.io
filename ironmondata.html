@@ -6,6 +6,7 @@
 body
 {
 	background-color:black;
+	color:white;
 }
 div
 {
@@ -30,7 +31,7 @@ img
   position: relative;
   width: 100%;
   height: 100%;
-  line-height: 2px;
+  line-height: 1px;
   transition: transform 0.2s;
   transform-style: preserve-3d;
 }
@@ -77,7 +78,9 @@ img
 </head>
 
 
-<body>
+<body onload="loadJSON(readJSON)">
+<p> Credits to <b>Brdy</b>, <b>Harkenn_</b> for the data, and <b>Valhallan597</b> for the idea. </p>
+
 <div>
 <button class="letters" type="button" onclick="OnSort(this)" id="0"> ALL </button>
 <button class="letters" type="button" onclick="OnSort(this)" id="a"> A </button>
@@ -109,241 +112,112 @@ img
 </div>
 <br>
 <script>
-// credits to Valhallan597
-var data = `Bulbasaur Evos - Top 10 (69.3%): Nidorino(8.0%), Nidorina(8.0%), Bayleef(7.7%), Grovyle(7.7%), Arbok(7.6%), Sunflora(6.9%), Haunter(6.6%), Weepinbell(5.6%), Dustox(5.6%), Ariados(5.5%)
-Ivysaur Evos - Top 10 (69.3%): Sceptile(11.2%), Meganium(8.7%), Crobat(8.1%), Bellossom(7.0%), Muk(6.9%), Weezing(6.5%), Cacturne(5.9%), Shiftry(5.3%), Cradily(5.0%), Exeggutor(4.6%)
-Charmander Evos - Top 9 (100.0%): Magby(20.2%), Quilava(19.9%), Ponyta(17.6%), Magcargo(17.4%), Combusken(15.2%), Growlithe(6.5%), Houndour(1.5%), Camerupt(1.3%), Torkoal(0.5%)
-Charmeleon Evos - Top 10 (100.0%): Arcanine(15.7%), Magmar(12.7%), Flareon(12.3%), Typhlosion(12.3%), Rapidash(11.6%), Ninetales(11.4%), Blaziken(10.7%), Houndoom(9.0%), Torkoal(3.3%), Camerupt(1.1%)
-Squirtle Evos - Top 10 (88.4%): Poliwhirl(11.9%), Croconaw(10.1%), Azumarill(10.0%), Corsola(10.0%), Wailmer(9.8%), Sealeo(8.8%), Seadra(7.6%), Marshtomp(7.1%), Pelipper(7.1%), Quagsire(6.0%)
-Wartortle Evos - Top 10 (50.9%): Milotic(6.3%), Gyarados(5.6%), Feraligatr(5.4%), Lapras(5.3%), Walrein(5.1%), Vaporeon(5.0%), Gorebyss(4.7%), Huntail(4.7%), Octillery(4.5%), Cloyster(4.3%)
-Caterpie Evos - Top 5 (100.0%): Silcoon(24.4%), Cascoon(24.3%), Kakuna(18.5%), Wurmple(16.4%), Weedle(16.4%)
-Metapod Evos - Top 10 (93.1%): Beautifly(11.1%), Anorith(10.7%), Volbeat(10.4%), Ledian(10.4%), Illumise(10.3%), Yanma(9.8%), Masquerain(8.2%), Dustox(7.5%), Ariados(7.4%), Beedrill(7.4%)
-Weedle Evos - Top 6 (100.0%): Cascoon(23.0%), Silcoon(23.0%), Metapod(18.0%), Wurmple(16.0%), Caterpie(16.0%), Zubat(3.9%)
-Kakuna Evos - Top 10 (63.8%): Beautifly(6.9%), Butterfree(6.8%), Anorith(6.5%), Nidorino(6.5%), Nidorina(6.5%), Volbeat(6.4%), Illumise(6.4%), Ledian(6.4%), Yanma(6.1%), Haunter(5.4%)
-Pidgey Evos - Top 10 (92.4%): Clefairy(10.2%), Natu(9.8%), Delibird(9.8%), Loudred(9.6%), Skiploom(9.4%), Spinda(9.0%), Aipom(9.0%), Eevee(8.7%), Teddiursa(8.7%), Delcatty(8.1%)
-Pidgeotto Evos - Top 10 (37.0%): Porygon2(4.1%), Ursaring(3.9%), Exploud(3.7%), Wigglytuff(3.7%), Scyther(3.6%), Clefable(3.6%), Tauros(3.6%), Miltank(3.6%), Kangaskhan(3.6%), Zangoose(3.5%)
-Rattata Evos - Top 10 (62.3%): Delcatty(6.8%), Lickitung(6.6%), Linoone(6.4%), Porygon(6.4%), Wigglytuff(6.3%), Castform(6.2%), Furret(6.1%), Dunsparce(5.9%), Vigoroth(5.8%), Persian(5.8%)
-Spearow Evos - Top 10 (36.3%): Murkrow(3.8%), Linoone(3.8%), Wigglytuff(3.7%), Raticate(3.7%), Exploud(3.7%), Castform(3.6%), Clefable(3.6%), Furret(3.5%), Zangoose(3.5%), Dunsparce(3.4%)
-Pikachu Evos - Top 9 (100.0%): Manectric(14.4%), Magneton(14.2%), Ampharos(14.2%), Electrode(14.1%), Electabuzz(14.1%), Lanturn(9.1%), Minun(7.5%), Plusle(7.5%), Jolteon(4.8%)
-Sandshrew Evos - Top 10 (80.5%): Dugtrio(12.0%), Pupitar(10.4%), Marowak(10.1%), Gligar(7.9%), Golem(7.3%), Rhydon(7.3%), Piloswine(7.1%), Marshtomp(6.5%), Camerupt(6.4%), Quagsire(5.5%)
-Nidoran-F Evos - Top 10 (98.6%): Koffing(16.4%), Tentacool(16.0%), Nidorino(12.7%), Weepinbell(9.1%), Dustox(9.1%), Ariados(9.0%), Beedrill(8.9%), Gloom(8.5%), Roselia(8.1%), Grimer(0.7%)
-Nidorina Evos - Top 10 (79.7%): Crobat(10.8%), Swalot(9.2%), Muk(9.2%), Seviper(8.8%), Weezing(8.7%), Venomoth(7.2%), Venusaur(7.1%), Golbat(7.0%), Gengar(6.2%), Vileplume(5.5%)
-Nidoran-F Evos - Top 10 (98.6%): Koffing(16.4%), Tentacool(16.0%), Nidorino(12.7%), Weepinbell(9.1%), Dustox(9.1%), Ariados(9.0%), Beedrill(8.9%), Gloom(8.5%), Roselia(8.1%), Grimer(0.7%)
-Nidorino Evos - Top 10 (79.7%): Crobat(10.9%), Swalot(9.2%), Muk(9.2%), Weezing(8.7%), Seviper(8.7%), Venomoth(7.2%), Venusaur(7.1%), Golbat(7.0%), Gengar(6.2%), Vileplume(5.5%)
-Clefairy Evos - Top 10 (56.9%): Porygon2(6.4%), Ursaring(6.1%), Exploud(5.8%), Kangaskhan(5.7%), Tauros(5.6%), Miltank(5.6%), Zangoose(5.5%), Persian(5.4%), Vigoroth(5.4%), Stantler(5.3%)
-Vulpix Evos - Top 10 (94.6%): Torkoal(12.6%), Arcanine(12.1%), Magmar(9.9%), Typhlosion(9.6%), Flareon(9.5%), Rapidash(9.0%), Blaziken(8.5%), Charizard(8.4%), Camerupt(7.8%), Houndoom(7.1%)
-Jigglypuff Evos - Top 10 (54.0%): Lickitung(5.8%), Porygon(5.7%), Linoone(5.6%), Raticate(5.5%), Castform(5.5%), Furret(5.3%), Dunsparce(5.2%), Zangoose(5.1%), Vigoroth(5.1%), Persian(5.1%)
-Zubat Evos - Top 10 (44.8%): Scyther(5.2%), Arbok(5.0%), Skarmory(4.9%), Ninjask(4.6%), Swellow(4.4%), Pidgeot(4.2%), Dodrio(4.2%), Fearow(4.1%), Noctowl(4.1%), Masquerain(3.9%)
-Golbat Evos - Top 10 (79.6%): Scyther(11.6%), Muk(9.0%), Aerodactyl(8.8%), Weezing(8.6%), Gyarados(8.6%), Charizard(7.4%), Venusaur(7.2%), Altaria(6.8%), Gengar(6.2%), Nidoqueen(5.4%)
-Oddish Evos - Top 10 (76.5%): Nidorino(9.1%), Nidorina(9.1%), Grovyle(8.8%), Bayleef(8.8%), Sunflora(7.8%), Haunter(7.5%), Dustox(6.4%), Weepinbell(6.4%), Ivysaur(6.3%), Beedrill(6.3%)
-Gloom -> Bellossom Evos - Top 10 (53.5%): Arbok(7.0%), Meganium(6.7%), Swalot(5.4%), Muk(5.4%), Seviper(5.1%), Weezing(5.1%), Tangela(4.8%), Jumpluff(4.8%), Tropius(4.6%), Cacturne(4.6%)
-Gloom -> Vileplume Evos - Top 10 (52.2%): Arbok(6.8%), Meganium(6.6%), Swalot(5.3%), Muk(5.2%), Seviper(5.0%), Weezing(5.0%), Tangela(4.7%), Jumpluff(4.7%), Tropius(4.5%), Cacturne(4.5%)
-Paras Evos - Top 10 (63.2%): Beautifly(7.0%), Butterfree(7.0%), Ledian(6.5%), Illumise(6.5%), Volbeat(6.5%), Bayleef(6.4%), Grovyle(6.4%), Yanma(6.2%), Sunflora(5.7%), Masquerain(5.2%)
-Venonat Evos - Top 10 (68.2%): Forretress(8.9%), Arbok(8.0%), Ninjask(7.4%), Armaldo(7.0%), Haunter(6.9%), Masquerain(6.3%), Swalot(6.2%), Seviper(5.9%), Weezing(5.9%), Ivysaur(5.7%)
-Diglett Evos - Top 10 (98.4%): Onix(18.1%), Graveler(17.0%), Pupitar(15.0%), Marowak(14.7%), Gligar(11.6%), Marshtomp(9.9%), Quagsire(8.4%), Rhyhorn(2.2%), Sandslash(1.1%), Phanpy(0.6%)
-Meowth Evos - Top 10 (51.5%): Linoone(5.4%), Wigglytuff(5.3%), Exploud(5.3%), Raticate(5.2%), Castform(5.2%), Clefable(5.1%), Furret(5.1%), Zangoose(5.0%), Dunsparce(4.9%), Vigoroth(4.9%)
-Psyduck Evos - Top 10 (39.3%): Milotic(4.7%), Gyarados(4.2%), Blastoise(4.0%), Feraligatr(4.0%), Lapras(4.0%), Walrein(3.9%), Vaporeon(3.8%), Kingler(3.7%), Gorebyss(3.5%), Huntail(3.5%)
-Mankey Evos - Top 10 (98.6%): Hitmontop(16.0%), Hitmonchan(16.0%), Hitmonlee(16.0%), Hariyama(12.7%), Medicham(9.2%), Heracross(9.1%), Breloom(7.6%), Poliwrath(5.8%), Machoke(3.3%), Machamp(2.9%)
-Growlithe Evos - Top 10 (100.0%): Typhlosion(14.3%), Flareon(14.3%), Rapidash(13.4%), Ninetales(13.3%), Blaziken(12.5%), Charizard(12.4%), Houndoom(10.5%), Torkoal(4.2%), Magmar(3.8%), Camerupt(1.5%)
-Poliwag Evos - Top 10 (98.4%): Kabuto(15.5%), Omanyte(15.4%), Wartortle(10.2%), Croconaw(10.2%), Azumarill(10.2%), Corsola(10.1%), Wailmer(9.9%), Sealeo(9.0%), Marshtomp(7.3%), Staryu(0.4%)
-Poliwhirl -> Poliwrath Evos - Top 10 (39.8%): Milotic(4.7%), Gyarados(4.2%), Blastoise(4.1%), Feraligatr(4.1%), Lapras(4.1%), Walrein(3.9%), Kingler(3.8%), Vaporeon(3.8%), Gorebyss(3.6%), Huntail(3.6%)
-Poliwhirl -> Politoed Evos - Top 10 (40.6%): Milotic(4.9%), Gyarados(4.3%), Blastoise(4.2%), Feraligatr(4.2%), Lapras(4.1%), Walrein(4.0%), Vaporeon(3.9%), Kingler(3.9%), Huntail(3.6%), Gorebyss(3.6%)
-Abra Evos - Top 10 (95.3%): Wobbuffet(20.3%), Metang(16.2%), Chimecho(15.8%), Solrock(12.7%), Lunatone(12.7%), Medicham(11.0%), Mr. Mime(2.4%), Jynx(1.8%), Girafarig(1.1%), Drowzee(1.1%)
-Kadabra Evos - Top 10 (83.8%): Grumpig(10.5%), Mr. Mime(10.2%), Espeon(10.0%), Gardevoir(9.8%), Hypno(9.2%), Jynx(8.5%), Xatu(7.7%), Girafarig(6.4%), Claydol(5.9%), Exeggutor(5.6%)
-Machop Evos - Top 8 (100.0%): Hitmonlee(18.1%), Hitmontop(18.1%), Hitmonchan(18.1%), Primeape(12.8%), Combusken(12.3%), Medicham(10.0%), Breloom(8.3%), Hariyama(2.4%)
-Machoke Evos - Top 10 (99.1%): Hitmontop(15.3%), Hitmonlee(15.3%), Hitmonchan(15.2%), Hariyama(11.7%), Primeape(10.7%), Blaziken(9.3%), Heracross(8.3%), Breloom(6.9%), Poliwrath(5.2%), Combusken(1.2%)
-Bellsprout Evos - Top 10 (76.7%): Lileep(10.1%), Nidorino(8.6%), Nidorina(8.6%), Grovyle(8.3%), Bayleef(8.3%), Sunflora(7.4%), Haunter(7.2%), Dustox(6.1%), Ivysaur(6.0%), Ariados(6.0%)
-Weepinbell Evos - Top 10 (51.1%): Arbok(6.6%), Meganium(6.4%), Bellossom(5.1%), Muk(5.1%), Swalot(5.0%), Weezing(4.8%), Seviper(4.8%), Tangela(4.5%), Jumpluff(4.5%), Tropius(4.3%)
-Tentacool Evos - Top 10 (34.5%): Crobat(4.3%), Milotic(3.7%), Muk(3.5%), Swalot(3.5%), Weezing(3.4%), Gyarados(3.3%), Blastoise(3.2%), Lapras(3.2%), Feraligatr(3.2%), Walrein(3.1%)
-Geodude Evos - Top 10 (83.1%): Nosepass(10.0%), Kabuto(9.3%), Omanyte(9.3%), Sudowoodo(9.2%), Lileep(8.5%), Onix(8.2%), Dugtrio(7.8%), Anorith(7.3%), Pupitar(6.8%), Marowak(6.7%)
-Graveler Evos - Top 10 (57.6%): Donphan(7.1%), Shuckle(6.6%), Sandslash(6.3%), Armaldo(6.3%), Aggron(6.3%), Aerodactyl(5.4%), Steelix(5.1%), Rhydon(4.9%), Lunatone(4.8%), Solrock(4.7%)
-Ponyta Evos - Top 10 (95.2%): Torkoal(14.3%), Magmar(11.2%), Flareon(10.8%), Typhlosion(10.7%), Ninetales(10.1%), Blaziken(9.5%), Charizard(9.5%), Camerupt(8.8%), Houndoom(8.0%), Arcanine(2.5%)
-Magnemite Evos - Top 10 (87.6%): Lairon(12.6%), Forretress(10.7%), Scizor(10.5%), Skarmory(9.4%), Metang(8.6%), Raichu(7.2%), Manectric(7.2%), Electrode(7.1%), Ampharos(7.1%), Electabuzz(7.1%)
-Doduo Evos - Top 10 (33.4%): Ursaring(3.5%), Linoone(3.4%), Wigglytuff(3.4%), Exploud(3.4%), Castform(3.3%), Scyther(3.3%), Clefable(3.3%), Furret(3.3%), Tauros(3.3%), Miltank(3.2%)
-Seel Evos - Top 10 (43.3%): Kingler(4.8%), Gorebyss(4.5%), Huntail(4.5%), Seadra(4.5%), Seaking(4.4%), Octillery(4.3%), Pelipper(4.2%), Crawdaunt(4.1%), Politoed(4.0%), Wailord(3.9%)
-Grimer Evos - Top 10 (78.4%): Crobat(11.3%), Swalot(9.5%), Weezing(9.0%), Seviper(9.0%), Venomoth(7.4%), Venusaur(7.3%), Golbat(7.3%), Gengar(6.3%), Vileplume(5.7%), Victreebel(5.5%)
-Shellder Evos - Top 10 (48.1%): Milotic(5.8%), Gyarados(5.0%), Feraligatr(5.0%), Blastoise(5.0%), Lapras(4.9%), Walrein(4.7%), Vaporeon(4.6%), Kingler(4.6%), Gorebyss(4.3%), Huntail(4.3%)
-Gastly Evos - Top 10 (81.5%): Sableye(10.7%), Nidorino(9.7%), Nidorina(9.7%), Arbok(9.2%), Misdreavus(8.7%), Weepinbell(6.8%), Dustox(6.8%), Ivysaur(6.7%), Beedrill(6.7%), Ariados(6.6%)
-Haunter Evos - Top 10 (76.9%): Banette(11.5%), Dusclops(11.4%), Crobat(8.6%), Swalot(7.2%), Muk(7.2%), Seviper(6.9%), Weezing(6.9%), Venomoth(5.8%), Golbat(5.7%), Venusaur(5.7%)
-Onix Evos - Top 10 (64.0%): Donphan(8.5%), Shuckle(7.8%), Armaldo(7.5%), Aggron(7.4%), Aerodactyl(6.4%), Rhydon(5.8%), Golem(5.7%), Flygon(5.3%), Camerupt(4.9%), Cradily(4.7%)
-Drowzee Evos - Top 10 (76.1%): Grumpig(9.3%), Mr. Mime(9.0%), Espeon(8.8%), Gardevoir(8.6%), Alakazam(8.2%), Jynx(7.5%), Xatu(6.7%), Solrock(6.2%), Lunatone(6.2%), Girafarig(5.6%)
-Krabby Evos - Top 10 (42.7%): Gorebyss(4.5%), Seadra(4.5%), Huntail(4.5%), Seaking(4.5%), Octillery(4.3%), Pelipper(4.2%), Crawdaunt(4.1%), Politoed(4.0%), Golduck(4.0%), Wailord(3.9%)
-Voltorb Evos - Top 9 (100.0%): Jolteon(18.0%), Manectric(12.9%), Raichu(12.9%), Electabuzz(12.7%), Magneton(12.7%), Ampharos(12.6%), Lanturn(7.9%), Minun(5.2%), Plusle(5.1%)
-Exeggcute Evos - Top 10 (64.3%): Sceptile(8.9%), Grumpig(7.1%), Meganium(6.9%), Espeon(6.8%), Gardevoir(6.7%), Alakazam(6.3%), Hypno(6.2%), Bellossom(5.6%), Xatu(5.2%), Cacturne(4.8%)
-Cubone Evos - Top 10 (98.1%): Onix(13.8%), Dugtrio(12.9%), Graveler(12.9%), Pupitar(11.2%), Sandslash(10.3%), Gligar(8.6%), Piloswine(7.9%), Marshtomp(7.2%), Camerupt(7.1%), Quagsire(6.2%)
-Koffing Evos - Top 10 (78.1%): Crobat(11.1%), Swalot(9.5%), Muk(9.4%), Seviper(8.9%), Venomoth(7.4%), Venusaur(7.2%), Golbat(7.2%), Gengar(6.3%), Vileplume(5.6%), Victreebel(5.5%)
-Rhyhorn Evos - Top 10 (57.5%): Donphan(7.1%), Shuckle(6.6%), Sandslash(6.3%), Armaldo(6.3%), Aggron(6.3%), Aerodactyl(5.4%), Steelix(5.1%), Golem(4.9%), Lunatone(4.8%), Solrock(4.8%)
-Chansey Evos - Top 10 (99.4%): Porygon2(18.2%), Ursaring(17.3%), Kangaskhan(16.1%), Miltank(16.0%), Tauros(16.0%), Snorlax(13.5%), Exploud(0.7%), Clefable(0.6%), Stantler(0.5%), Pidgeot(0.4%)
-Horsea Evos - Top 10 (59.7%): Wartortle(7.2%), Croconaw(7.2%), Azumarill(7.1%), Wailmer(6.9%), Sealeo(6.1%), Kingler(5.5%), Seaking(5.1%), Octillery(4.9%), Marshtomp(4.8%), Pelipper(4.8%)
-Seadra Evos - Top 10 (61.1%): Milotic(7.5%), Gyarados(6.7%), Feraligatr(6.5%), Blastoise(6.5%), Lapras(6.4%), Walrein(6.2%), Vaporeon(6.1%), Cloyster(5.2%), Politoed(5.1%), Wailord(4.9%)
-Goldeen Evos - Top 10 (49.2%): Croconaw(6.1%), Wartortle(6.1%), Azumarill(6.1%), Sealeo(5.2%), Kingler(4.6%), Seadra(4.4%), Gorebyss(4.3%), Huntail(4.3%), Octillery(4.1%), Marshtomp(4.1%)
-Staryu Evos - Top 10 (44.9%): Milotic(5.4%), Gyarados(4.8%), Blastoise(4.6%), Feraligatr(4.6%), Lapras(4.6%), Walrein(4.4%), Vaporeon(4.3%), Kingler(4.3%), Huntail(4.0%), Gorebyss(4.0%)
-Scyther Evos - Top 10 (59.3%): Pinsir(8.0%), Forretress(7.0%), Skarmory(6.2%), Ninjask(5.8%), Crobat(5.7%), Shuckle(5.7%), Armaldo(5.5%), Pidgeot(5.4%), Dodrio(5.3%), Aerodactyl(4.7%)
-Magikarp Evos - Top 10 (60.4%): Milotic(7.7%), Blastoise(6.6%), Feraligatr(6.6%), Lapras(6.5%), Walrein(6.3%), Vaporeon(6.2%), Cloyster(5.2%), Politoed(5.2%), Wailord(5.0%), Golduck(5.0%)
-Porygon Evos - Top 10 (99.6%): Ursaring(11.1%), Exploud(10.6%), Clefable(10.3%), Tauros(10.3%), Miltank(10.3%), Kangaskhan(10.3%), Stantler(9.6%), Blissey(9.6%), Snorlax(8.9%), Pidgeot(8.7%)
-Omanyte Evos - Top 10 (34.2%): Shuckle(4.1%), Aggron(3.9%), Armaldo(3.9%), Milotic(3.6%), Aerodactyl(3.3%), Gyarados(3.2%), Blastoise(3.1%), Feraligatr(3.1%), Lapras(3.0%), Rhydon(3.0%)
-Kabuto Evos - Top 10 (34.1%): Shuckle(4.1%), Aggron(3.9%), Armaldo(3.9%), Milotic(3.6%), Aerodactyl(3.3%), Gyarados(3.2%), Feraligatr(3.1%), Blastoise(3.1%), Lapras(3.0%), Golem(3.0%)
-Eevee -> Vaporeon Evos - Top 10 (47.7%): Milotic(5.8%), Gyarados(5.1%), Feraligatr(5.0%), Blastoise(4.9%), Lapras(4.9%), Walrein(4.7%), Kingler(4.6%), Huntail(4.3%), Gorebyss(4.3%), Octillery(4.1%)
-Eevee -> Jolteon Evos - Top 7 (100.0%): Manectric(18.5%), Raichu(18.5%), Electrode(18.3%), Ampharos(18.2%), Electabuzz(18.2%), Magneton(5.9%), Lanturn(2.2%)
-Eevee -> Flareon Evos - Top 10 (100.0%): Arcanine(15.7%), Magmar(12.7%), Typhlosion(12.3%), Rapidash(11.6%), Ninetales(11.5%), Blaziken(10.8%), Charizard(10.7%), Houndoom(10.4%), Torkoal(3.2%), Camerupt(1.1%)
-Eevee -> Espeon Evos - Top 10 (91.9%): Gardevoir(14.9%), Alakazam(14.3%), Hypno(14.2%), Claydol(9.6%), Exeggutor(9.2%), Starmie(7.3%), Slowbro(6.6%), Slowking(6.6%), Metagross(6.4%), Grumpig(2.8%)
-Eevee -> Umbreon Evos - Top 8 (100.0%): Tyranitar(21.7%), Absol(16.9%), Cacturne(16.6%), Shiftry(15.4%), Houndoom(12.9%), Crawdaunt(7.3%), Sharpedo(6.6%), Sneasel(2.7%)
-Dratini Evos - Top 3 (100.0%): Shelgon(46.8%), Vibrava(32.9%), Altaria(20.3%)
-Dragonair Evos - Top 4 (100.0%): Salamence(49.4%), Flygon(22.1%), Kingdra(18.8%), Altaria(9.8%)
-Chikorita Evos - Top 10 (94.3%): Grovyle(14.9%), Sunflora(13.3%), Weepinbell(11.0%), Ivysaur(10.9%), Tangela(10.8%), Gloom(10.3%), Roselia(9.8%), Parasect(9.7%), Lileep(2.7%), Jumpluff(1.0%)
-Bayleef Evos - Top 10 (93.3%): Sceptile(18.8%), Bellossom(11.7%), Cacturne(9.8%), Venusaur(8.9%), Shiftry(8.8%), Cradily(8.4%), Exeggutor(7.7%), Vileplume(6.9%), Victreebel(6.8%), Ludicolo(5.6%)
-Cyndaquil Evos - Top 9 (100.0%): Magby(20.3%), Charmeleon(19.9%), Ponyta(17.5%), Magcargo(17.4%), Combusken(15.2%), Growlithe(6.4%), Houndour(1.5%), Camerupt(1.3%), Torkoal(0.5%)
-Quilava Evos - Top 10 (100.0%): Arcanine(15.9%), Magmar(12.9%), Flareon(12.3%), Rapidash(11.7%), Ninetales(11.6%), Blaziken(10.9%), Charizard(10.9%), Houndoom(9.1%), Torkoal(3.5%), Camerupt(1.2%)
-Totodile Evos - Top 10 (88.4%): Poliwhirl(12.0%), Wartortle(10.1%), Corsola(10.1%), Azumarill(10.0%), Wailmer(9.8%), Sealeo(8.7%), Seadra(7.5%), Marshtomp(7.1%), Pelipper(7.1%), Quagsire(6.0%)
-Croconaw Evos - Top 10 (51.0%): Milotic(6.3%), Gyarados(5.6%), Blastoise(5.4%), Lapras(5.3%), Walrein(5.2%), Vaporeon(5.0%), Gorebyss(4.7%), Huntail(4.7%), Octillery(4.4%), Cloyster(4.3%)
-Sentret Evos - Top 10 (60.1%): Delcatty(6.6%), Lickitung(6.3%), Porygon(6.2%), Linoone(6.2%), Wigglytuff(6.1%), Raticate(6.0%), Castform(6.0%), Dunsparce(5.6%), Vigoroth(5.6%), Persian(5.5%)
-Hoothoot Evos - Top 10 (36.3%): Murkrow(3.8%), Linoone(3.8%), Wigglytuff(3.7%), Exploud(3.7%), Castform(3.6%), Raticate(3.6%), Clefable(3.6%), Furret(3.6%), Zangoose(3.5%), Skarmory(3.4%)
-Ledyba Evos - Top 10 (77.8%): Murkrow(8.4%), Beautifly(8.4%), Butterfree(8.4%), Farfetch'd(8.2%), Anorith(8.0%), Illumise(7.8%), Volbeat(7.8%), Yanma(7.5%), Togetic(7.2%), Masquerain(6.3%)
-Spinarak Evos - Top 10 (63.8%): Butterfree(6.9%), Beautifly(6.8%), Anorith(6.5%), Nidorina(6.5%), Nidorino(6.5%), Ledian(6.4%), Illumise(6.4%), Volbeat(6.3%), Yanma(6.0%), Haunter(5.4%)
-Chinchou Evos - Top 10 (40.1%): Raichu(4.3%), Manectric(4.3%), Electabuzz(4.2%), Ampharos(4.2%), Electrode(4.2%), Magneton(4.1%), Kingler(3.9%), Seadra(3.6%), Gorebyss(3.6%), Huntail(3.6%)
-Pichu Evos - Top 5 (100.0%): Electrike(21.8%), Mareep(21.8%), Magnemite(21.7%), Voltorb(17.6%), Chinchou(17.1%)
-Cleffa Evos - Top 10 (100.0%): Snubbull(16.0%), Doduo(15.3%), Swablu(15.3%), Teddiursa(14.0%), Eevee(14.0%), Pidgeotto(13.4%), Farfetch'd(12.0%), Aipom(<0.1%), Slakoth(<0.1%), Ditto(<0.1%)
-Igglybuff Evos - Top 10 (91.0%): Meowth(9.4%), Ditto(9.4%), Slakoth(9.4%), Taillow(9.0%), Pidgey(9.0%), Spearow(9.0%), Rattata(9.0%), Togepi(9.0%), Smeargle(9.0%), Hoothoot(9.0%)
-Togepi Evos - Top 10 (70.0%): Delcatty(7.7%), Lickitung(7.4%), Porygon(7.2%), Linoone(7.2%), Wigglytuff(7.0%), Castform(6.9%), Raticate(6.9%), Furret(6.8%), Vigoroth(6.5%), Dunsparce(6.5%)
-Natu Evos - Top 10 (43.7%): Scyther(4.9%), Grumpig(4.7%), Skarmory(4.7%), Mr. Mime(4.5%), Ninjask(4.4%), Swellow(4.2%), Alakazam(4.1%), Chimecho(4.1%), Hypno(4.1%), Pidgeot(4.1%)
-Mareep Evos - Top 8 (100.0%): Elekid(30.7%), Voltorb(28.6%), Chinchou(28.2%), Magnemite(4.5%), Minun(4.0%), Plusle(4.0%), Electrike(<0.1%), Pikachu(<0.1%)
-Flaaffy Evos - Top 9 (100.0%): Jolteon(18.0%), Manectric(12.8%), Raichu(12.8%), Magneton(12.7%), Electrode(12.7%), Electabuzz(12.7%), Lanturn(7.9%), Minun(5.2%), Plusle(5.2%)
-Marill Evos - Top 10 (84.3%): Poliwhirl(11.3%), Croconaw(9.5%), Corsola(9.4%), Wartortle(9.4%), Wailmer(9.2%), Sealeo(8.2%), Seadra(7.1%), Seaking(7.0%), Pelipper(6.6%), Marshtomp(6.6%)
-Hoppip Evos - Top 10 (68.9%): Nuzleaf(7.1%), Natu(7.0%), Delibird(7.0%), Lombre(6.9%), Cacnea(6.8%), Chikorita(6.8%), Oddish(6.8%), Swablu(6.8%), Bulbasaur(6.8%), Exeggcute(6.8%)
-Skiploom Evos - Top 10 (41.2%): Murkrow(4.8%), Grovyle(4.4%), Bayleef(4.3%), Skarmory(4.3%), Togetic(4.1%), Ninjask(4.1%), Swellow(3.9%), Sunflora(3.8%), Pidgeot(3.8%), Dodrio(3.7%)
-Sunkern Evos - Top 10 (90.3%): Bayleef(12.2%), Grovyle(12.2%), Weepinbell(8.8%), Ivysaur(8.6%), Tangela(8.5%), Jumpluff(8.4%), Gloom(8.1%), Tropius(8.1%), Roselia(7.7%), Parasect(7.7%)
-Wooper Evos - Top 10 (54.7%): Dugtrio(6.7%), Graveler(6.6%), Pupitar(5.7%), Marowak(5.6%), Sandslash(5.2%), Wartortle(5.2%), Croconaw(5.1%), Azumarill(5.1%), Wailmer(5.0%), Sealeo(4.4%)
-Pineco Evos - Top 10 (98.5%): Pinsir(16.5%), Scizor(14.5%), Scyther(13.7%), Ninjask(12.3%), Shuckle(12.1%), Armaldo(11.7%), Venomoth(8.5%), Heracross(7.9%), Illumise(0.7%), Volbeat(0.7%)
-Snubbull Evos - Top 10 (45.0%): Linoone(4.7%), Raticate(4.6%), Wigglytuff(4.6%), Exploud(4.6%), Castform(4.5%), Clefable(4.5%), Furret(4.4%), Kangaskhan(4.4%), Tauros(4.4%), Miltank(4.4%)
-Teddiursa Evos - Top 10 (70.8%): Porygon2(8.1%), Exploud(7.4%), Clefable(7.2%), Miltank(7.1%), Tauros(7.1%), Kangaskhan(7.1%), Zangoose(6.9%), Stantler(6.7%), Blissey(6.6%), Granbull(6.6%)
-Slugma Evos - Top 9 (100.0%): Quilava(21.5%), Charmeleon(21.5%), Ponyta(19.3%), Combusken(17.2%), Growlithe(8.5%), Magby(5.2%), Torkoal(4.0%), Camerupt(2.0%), Houndour(0.7%)
-Swinub Evos - Top 10 (67.6%): Glalie(10.4%), Dugtrio(8.1%), Sneasel(7.4%), Pupitar(7.0%), Marowak(6.8%), Sandslash(6.4%), Jynx(5.8%), Sealeo(5.4%), Gligar(5.3%), Golem(5.0%)
-Remoraid Evos - Top 10 (45.1%): Kingler(5.0%), Vaporeon(4.9%), Gorebyss(4.7%), Huntail(4.7%), Seadra(4.6%), Seaking(4.6%), Cloyster(4.2%), Crawdaunt(4.2%), Politoed(4.2%), Wailord(4.0%)
-Houndour Evos - Top 10 (73.4%): Umbreon(12.5%), Absol(10.5%), Torkoal(8.3%), Magmar(6.4%), Typhlosion(6.3%), Flareon(6.3%), Rapidash(6.0%), Ninetales(5.9%), Cacturne(5.7%), Charizard(5.6%)
-Phanpy Evos - Top 10 (80.4%): Sandslash(11.2%), Steelix(8.9%), Rhydon(8.6%), Golem(8.6%), Piloswine(8.3%), Flygon(7.9%), Camerupt(7.4%), Claydol(7.0%), Swampert(6.9%), Whiscash(5.7%)
-Smoochum Evos - Top 10 (64.2%): Glalie(9.7%), Sneasel(6.9%), Grumpig(6.8%), Mr. Mime(6.6%), Metang(6.2%), Alakazam(6.0%), Chimecho(6.0%), Hypno(6.0%), Sealeo(5.1%), Xatu(5.0%)
-Elekid Evos - Top 9 (100.0%): Jolteon(18.0%), Manectric(12.9%), Raichu(12.9%), Electrode(12.7%), Magneton(12.7%), Ampharos(12.7%), Lanturn(7.9%), Plusle(5.2%), Minun(5.1%)
-Magby Evos - Top 10 (94.3%): Torkoal(14.3%), Typhlosion(10.8%), Flareon(10.7%), Rapidash(10.2%), Ninetales(10.1%), Charizard(9.5%), Blaziken(9.5%), Camerupt(8.9%), Houndoom(8.0%), Arcanine(2.4%)
-Larvitar Evos - Top 10 (73.0%): Nosepass(9.6%), Sudowoodo(8.8%), Lairon(8.6%), Onix(7.8%), Dugtrio(7.3%), Graveler(7.3%), Marowak(6.3%), Sandslash(5.9%), Corsola(5.8%), Magcargo(5.6%)
-Pupitar Evos - Top 10 (91.4%): Aggron(17.8%), Aerodactyl(15.8%), Steelix(15.1%), Flygon(13.7%), Swampert(12.5%), Donphan(4.3%), Shuckle(3.8%), Armaldo(3.6%), Rhydon(2.4%), Golem(2.4%)
-Treecko Evos - Top 10 (94.3%): Bayleef(14.9%), Sunflora(13.3%), Weepinbell(11.0%), Ivysaur(10.9%), Tangela(10.8%), Gloom(10.3%), Roselia(9.8%), Parasect(9.7%), Lileep(2.7%), Jumpluff(1.0%)
-Grovyle Evos - Top 10 (91.3%): Meganium(16.0%), Bellossom(13.1%), Venusaur(10.0%), Shiftry(9.9%), Cradily(9.4%), Exeggutor(8.7%), Vileplume(7.9%), Victreebel(7.6%), Ludicolo(6.3%), Sunflora(2.5%)
-Torchic Evos - Top 9 (100.0%): Magby(19.9%), Charmeleon(19.6%), Quilava(19.6%), Ponyta(17.2%), Magcargo(17.1%), Growlithe(4.9%), Camerupt(0.9%), Houndour(0.7%), Torkoal(0.2%)
-Combusken Evos - Top 10 (90.2%): Machamp(13.8%), Arcanine(11.2%), Magmar(9.2%), Flareon(8.9%), Typhlosion(8.9%), Rapidash(8.4%), Ninetales(8.3%), Charizard(7.9%), Heracross(6.9%), Houndoom(6.6%)
-Mudkip Evos - Top 10 (89.5%): Poliwhirl(11.7%), Croconaw(9.9%), Wartortle(9.9%), Corsola(9.8%), Azumarill(9.8%), Wailmer(9.5%), Sealeo(8.6%), Seadra(7.4%), Pelipper(6.9%), Quagsire(5.9%)
-Marshtomp Evos - Top 10 (42.6%): Donphan(5.8%), Milotic(4.7%), Gyarados(4.2%), Feraligatr(4.1%), Blastoise(4.1%), Steelix(4.0%), Lapras(4.0%), Walrein(3.9%), Golem(3.9%), Rhydon(3.9%)
-Poochyena Evos - Top 10 (100.0%): Sableye(25.6%), Murkrow(24.5%), Sneasel(23.2%), Sharpedo(13.9%), Absol(5.0%), Nuzleaf(2.3%), Cacturne(1.9%), Shiftry(1.7%), Crawdaunt(1.5%), Houndoom(0.3%)
-Zigzagoon Evos - Top 10 (54.2%): Delcatty(6.0%), Lickitung(5.7%), Porygon(5.6%), Wigglytuff(5.5%), Castform(5.4%), Raticate(5.4%), Furret(5.3%), Zangoose(5.2%), Dunsparce(5.1%), Persian(5.1%)
-Wurmple -> Silcoon Evos - Top 4 (100.0%): Kakuna(26.7%), Metapod(26.6%), Weedle(23.3%), Caterpie(23.3%)
-Wurmple -> Cascoon Evos - Top 4 (100.0%): Metapod(26.7%), Kakuna(26.6%), Caterpie(23.4%), Weedle(23.3%)
-Silcoon Evos - Top 10 (93.2%): Butterfree(11.2%), Anorith(10.7%), Illumise(10.4%), Ledian(10.4%), Volbeat(10.3%), Yanma(9.9%), Masquerain(8.2%), Dustox(7.5%), Beedrill(7.3%), Ariados(7.3%)
-Cascoon Evos - Top 10 (93.4%): Butterfree(10.7%), Beautifly(10.7%), Anorith(10.3%), Volbeat(10.0%), Ledian(10.0%), Illumise(10.0%), Yanma(9.5%), Masquerain(8.0%), Ariados(7.2%), Beedrill(7.1%)
-Lotad Evos - Top 10 (42.7%): Slowpoke(4.3%), Psyduck(4.3%), Mudkip(4.3%), Totodile(4.3%), Squirtle(4.3%), Staryu(4.3%), Luvdisc(4.3%), Clamperl(4.3%), Goldeen(4.3%), Krabby(4.3%)
-Lombre Evos - Top 10 (33.6%): Meganium(4.7%), Bellossom(3.8%), Tangela(3.3%), Jumpluff(3.3%), Tropius(3.2%), Cacturne(3.1%), Kingler(3.1%), Vaporeon(3.1%), Seadra(2.9%), Huntail(2.9%)
-Seedot Evos - Top 9 (100.0%): Lombre(11.5%), Treecko(11.3%), Bulbasaur(11.3%), Chikorita(11.3%), Oddish(11.3%), Exeggcute(11.2%), Cacnea(11.2%), Skiploom(11.0%), Lileep(10.0%)
-Nuzleaf Evos - Top 10 (66.9%): Umbreon(11.9%), Absol(9.9%), Meganium(7.7%), Bellossom(6.3%), Tangela(5.6%), Jumpluff(5.5%), Cacturne(5.3%), Tropius(5.3%), Venusaur(4.8%), Crawdaunt(4.6%)
-Taillow Evos - Top 10 (34.2%): Murkrow(3.6%), Porygon(3.5%), Linoone(3.5%), Wigglytuff(3.5%), Raticate(3.4%), Castform(3.4%), Clefable(3.4%), Furret(3.3%), Ledian(3.3%), Zangoose(3.2%)
-Wingull Evos - Top 10 (39.1%): Murkrow(4.6%), Ledian(4.2%), Skarmory(4.1%), Yanma(4.0%), Togetic(3.9%), Ninjask(3.9%), Swellow(3.7%), Croconaw(3.6%), Wartortle(3.6%), Pidgeot(3.6%)
-Ralts Evos - Top 5 (100.0%): Wynaut(20.3%), Smoochum(20.2%), Meditite(20.2%), Beldum(20.1%), Baltoy(19.2%)
-Kirlia Evos - Top 10 (92.0%): Grumpig(13.5%), Espeon(12.8%), Alakazam(12.0%), Hypno(11.8%), Xatu(9.9%), Claydol(7.7%), Exeggutor(7.3%), Starmie(6.1%), Slowking(5.5%), Slowbro(5.4%)
-Surskit Evos - Top 10 (50.9%): Beautifly(5.7%), Butterfree(5.6%), Poliwhirl(5.4%), Ledian(5.3%), Illumise(5.2%), Volbeat(5.2%), Yanma(5.0%), Croconaw(4.5%), Corsola(4.5%), Wartortle(4.5%)
-Shroomish Evos - Top 10 (84.1%): Sunflora(11.3%), Bellossom(10.1%), Tangela(9.0%), Jumpluff(9.0%), Tropius(8.7%), Cacturne(8.6%), Shiftry(7.8%), Cradily(7.4%), Vileplume(6.2%), Victreebel(6.0%)
-Slakoth Evos - Top 10 (51.5%): Linoone(5.4%), Wigglytuff(5.3%), Exploud(5.3%), Raticate(5.2%), Castform(5.2%), Clefable(5.1%), Furret(5.1%), Zangoose(5.0%), Dunsparce(4.9%), Persian(4.9%)
-Vigoroth Evos - Top 2 (100.0%): Blissey(54.1%), Snorlax(45.9%)
-Whismur Evos - Top 10 (100.0%): Spinda(12.0%), Aipom(12.0%), Eevee(11.7%), Teddiursa(11.7%), Pidgeotto(11.2%), Delcatty(10.7%), Lickitung(10.4%), Porygon(10.1%), Farfetch'd(10.1%), Swablu(<0.1%)
-Loudred Evos - Top 10 (59.8%): Porygon2(6.7%), Ursaring(6.5%), Clefable(6.0%), Kangaskhan(6.0%), Miltank(6.0%), Tauros(5.9%), Zangoose(5.8%), Persian(5.7%), Vigoroth(5.7%), Stantler(5.6%)
-Makuhita Evos - Top 10 (98.9%): Machamp(17.6%), Hitmontop(15.3%), Hitmonchan(15.3%), Hitmonlee(15.3%), Primeape(11.1%), Heracross(8.7%), Breloom(7.3%), Poliwrath(5.6%), Machoke(2.1%), Combusken(0.7%)
-Azurill Evos - Top 10 (91.1%): Zigzagoon(9.4%), Whismur(9.4%), Jigglypuff(9.4%), Spearow(9.0%), Pidgey(9.0%), Skitty(9.0%), Togepi(9.0%), Smeargle(9.0%), Taillow(9.0%), Hoothoot(9.0%)
-Skitty Evos - Top 10 (92.3%): Loudred(11.2%), Aipom(10.4%), Spinda(10.4%), Pidgeotto(9.6%), Lickitung(8.9%), Porygon(8.8%), Farfetch'd(8.6%), Raticate(8.4%), Furret(8.2%), Dunsparce(7.9%)
-Aron Evos - Top 10 (98.7%): Sudowoodo(14.0%), Forretress(11.7%), Graveler(11.6%), Skarmory(10.4%), Pupitar(10.2%), Metang(9.5%), Magcargo(8.8%), Magneton(7.7%), Lunatone(7.4%), Solrock(7.4%)
-Meditite Evos - Top 10 (98.5%): Machoke(16.4%), Kadabra(15.2%), Wobbuffet(15.2%), Metang(11.8%), Chimecho(11.5%), Combusken(9.4%), Solrock(9.2%), Lunatone(9.1%), Hitmonlee(0.3%), Hitmonchan(0.3%)
-Electrike Evos - Top 9 (100.0%): Raichu(14.4%), Magneton(14.2%), Electabuzz(14.2%), Electrode(14.1%), Ampharos(14.1%), Lanturn(9.1%), Plusle(7.5%), Minun(7.5%), Jolteon(4.8%)
-Gulpin Evos - Top 10 (80.0%): Arbok(12.6%), Muk(9.6%), Seviper(9.2%), Weezing(9.2%), Venomoth(7.7%), Golbat(7.4%), Gengar(6.5%), Qwilfish(6.1%), Vileplume(5.9%), Victreebel(5.7%)
-Carvanha Evos - Top 10 (46.8%): Mightyena(9.7%), Absol(7.1%), Sneasel(5.8%), Kingler(3.6%), Cacturne(3.6%), Huntail(3.4%), Gorebyss(3.4%), Seadra(3.4%), Seaking(3.4%), Octillery(3.3%)
-Wailmer Evos - Top 10 (39.5%): Milotic(4.7%), Gyarados(4.2%), Feraligatr(4.1%), Blastoise(4.1%), Lapras(4.0%), Walrein(3.8%), Vaporeon(3.8%), Kingler(3.8%), Huntail(3.5%), Gorebyss(3.5%)
-Spoink Evos - Top 10 (85.4%): Mr. Mime(10.8%), Alakazam(9.8%), Chimecho(9.7%), Hypno(9.7%), Jynx(9.0%), Xatu(8.2%), Lunatone(7.6%), Solrock(7.6%), Girafarig(6.9%), Claydol(6.3%)
-Trapinch Evos - Top 10 (100.0%): Cubone(33.2%), Rhyhorn(33.2%), Phanpy(33.2%), Sandshrew(0.1%), Larvitar(0.1%), Numel(0.1%), Geodude(0.1%), Baltoy(0.1%), Onix(<0.1%), Graveler(<0.1%)
-Vibrava Evos - Top 10 (81.8%): Donphan(12.8%), Steelix(9.3%), Rhydon(9.1%), Golem(9.1%), Altaria(7.7%), Claydol(7.5%), Swampert(7.3%), Kingdra(6.9%), Nidoking(6.1%), Nidoqueen(6.1%)
-Cacnea Evos - Top 10 (79.9%): Bellossom(10.4%), Jumpluff(9.3%), Tangela(9.3%), Tropius(9.0%), Shiftry(8.1%), Cradily(7.7%), Exeggutor(7.1%), Vileplume(6.4%), Breloom(6.3%), Victreebel(6.2%)
-Swablu Evos - Top 10 (43.6%): Porygon2(4.8%), Ursaring(4.6%), Exploud(4.4%), Scyther(4.3%), Clefable(4.3%), Tauros(4.3%), Kangaskhan(4.3%), Miltank(4.3%), Zangoose(4.1%), Skarmory(4.1%)
-Barboach Evos - Top 10 (36.7%): Donphan(4.9%), Marowak(4.7%), Sandslash(4.3%), Gligar(3.5%), Steelix(3.4%), Rhydon(3.3%), Golem(3.3%), Kingler(3.2%), Piloswine(3.2%), Seadra(3.0%)
-Corphish Evos - Top 10 (45.7%): Kingler(5.1%), Gorebyss(4.8%), Seadra(4.8%), Huntail(4.7%), Seaking(4.7%), Octillery(4.6%), Pelipper(4.4%), Politoed(4.2%), Golduck(4.2%), Wailord(4.1%)
-Baltoy Evos - Top 10 (52.0%): Grumpig(5.8%), Donphan(5.7%), Mr. Mime(5.6%), Espeon(5.5%), Gardevoir(5.4%), Alakazam(5.1%), Hypno(5.1%), Sandslash(5.1%), Jynx(4.6%), Xatu(4.2%)
-Lileep Evos - Top 10 (57.1%): Sceptile(8.5%), Meganium(6.5%), Shuckle(6.2%), Aggron(5.9%), Armaldo(5.9%), Bellossom(5.3%), Aerodactyl(5.0%), Jumpluff(4.6%), Golem(4.6%), Rhydon(4.6%)
-Anorith Evos - Top 10 (74.0%): Pinsir(10.0%), Forretress(8.8%), Scizor(8.7%), Scyther(8.2%), Ninjask(7.3%), Shuckle(7.2%), Aggron(6.8%), Aerodactyl(6.0%), Rhydon(5.5%), Golem(5.5%)
-Feebas Evos - Top 10 (59.9%): Gyarados(6.8%), Feraligatr(6.7%), Blastoise(6.7%), Lapras(6.6%), Walrein(6.3%), Vaporeon(6.2%), Cloyster(5.3%), Politoed(5.2%), Golduck(5.1%), Wailord(5.0%)
-Shuppet Evos - Top 5 (100.0%): Dusclops(34.5%), Misdreavus(27.6%), Gengar(17.6%), Haunter(11.8%), Sableye(8.5%)
-Duskull Evos - Top 5 (100.0%): Banette(34.5%), Misdreavus(27.6%), Gengar(17.5%), Haunter(11.9%), Sableye(8.6%)
-Wynaut Evos - Top 10 (95.6%): Kadabra(20.4%), Metang(16.3%), Chimecho(15.9%), Solrock(12.7%), Lunatone(12.7%), Medicham(11.0%), Mr. Mime(2.4%), Jynx(1.8%), Spoink(1.2%), Drowzee(1.2%)
-Snorunt Evos - Top 8 (100.0%): Jynx(21.0%), Piloswine(17.8%), Cloyster(16.3%), Dewgong(15.3%), Sneasel(11.0%), Sealeo(6.7%), Lapras(6.1%), Walrein(5.9%)
-Clamperl -> Huntail Evos - Top 10 (43.3%): Feraligatr(4.8%), Blastoise(4.8%), Walrein(4.6%), Kingler(4.5%), Vaporeon(4.5%), Seadra(4.2%), Seaking(4.1%), Octillery(4.0%), Cloyster(3.9%), Crawdaunt(3.8%)
-Clamperl -> Gorebyss Evos - Top 10 (44.7%): Feraligatr(5.0%), Blastoise(5.0%), Walrein(4.8%), Kingler(4.7%), Vaporeon(4.6%), Seadra(4.3%), Seaking(4.2%), Octillery(4.1%), Cloyster(3.9%), Crawdaunt(3.9%)
-Spheal Evos - Top 10 (76.8%): Poliwhirl(9.6%), Sneasel(9.3%), Wartortle(8.1%), Corsola(8.0%), Croconaw(8.0%), Azumarill(8.0%), Wailmer(7.8%), Piloswine(6.1%), Seadra(6.0%), Seaking(5.9%)
-Sealeo Evos - Top 10 (52.3%): Glalie(10.6%), Milotic(5.5%), Gyarados(4.9%), Feraligatr(4.8%), Blastoise(4.8%), Lapras(4.7%), Vaporeon(4.5%), Gorebyss(4.2%), Huntail(4.2%), Octillery(4.0%)
-Bagon Evos - Top 3 (100.0%): Dragonair(46.8%), Vibrava(32.9%), Altaria(20.4%)
-Shelgon Evos - Top 4 (100.0%): Dragonite(49.4%), Flygon(22.1%), Kingdra(18.7%), Altaria(9.8%)
-Beldum Evos - Top 10 (93.9%): Mawile(14.3%), Lairon(12.4%), Wobbuffet(11.1%), Kadabra(11.1%), Mr. Mime(9.2%), Chimecho(8.4%), Jynx(7.8%), Lunatone(6.7%), Solrock(6.7%), Girafarig(6.1%)
-Metang Evos - Top 10 (98.8%): Espeon(18.2%), Gardevoir(17.8%), Aggron(16.7%), Steelix(13.9%), Exeggutor(10.8%), Starmie(9.1%), Scizor(4.6%), Alakazam(3.2%), Hypno(3.2%), Claydol(1.4%)`;
-
-let pokemonList = data.split(/\r?\n/);
-const imgUrl = "https://img.pokemondb.net/sprites/ruby-sapphire/normal/";
-
-for (let i = 0; i < pokemonList.length; i++) {
-	let flipCard = document.createElement('div');
-	let flipCardInner = document.createElement('div')
-	let flipCardFront = document.createElement('div')
-	let flipCardBack = document.createElement('div')
-
-	flipCard.classList.add('flip-card');
-	flipCard.id = pokemonList[i].split(" ")[0].toLowerCase();
-	flipCardInner.classList.add('flip-card-inner');
-	flipCardFront.classList.add('flip-card-front');
-	flipCardBack.classList.add('flip-card-back');
-
-	flipCard.appendChild(flipCardInner);
-	flipCardInner.appendChild(flipCardFront);
-	flipCardInner.appendChild(flipCardBack);
-
-	var image = document.createElement("img");
-	image.src = imgUrl + pokemonList[i].split(" ")[0].toLowerCase() + ".png";
-	image.width = 84;	
-	image.height = 84;
-	flipCardFront.appendChild(image);
-		
-	if (pokemonList[i].split(" ")[1] == "->") 
-	{		
-		flipCard.id = pokemonList[i].split(" ")[0].toLowerCase() + "-" + pokemonList[i].split(" ")[2].toLowerCase();
-		
-		var imageArrow = document.createElement("img");
-		imageArrow.src = "arrow.png";
-		imageArrow.width = 16;
-		imageArrow.height = 84;
-		flipCardFront.appendChild(imageArrow);
-	
-		var imageSpecial = document.createElement("img");
-		imageSpecial.src = imgUrl + pokemonList[i].split(" ")[2].toLowerCase() + ".png";
-		imageSpecial.width = 84;
-		imageSpecial.height = 84;
-		flipCardFront.appendChild(imageSpecial);
-	}
-		
-	let vals = pokemonList[i].split(":");
-	let perc = vals[1].split(",");
-	
-	for (let x = 0; x < perc.length; x++) 
+	function readJSON(response)
 	{
-		let pDiv = document.createElement('p');
-		var text = document.createTextNode(perc[x]);
-		pDiv.appendChild(text);
-		flipCardBack.appendChild(pDiv);
+		var json = JSON.parse(response);
+		for (var origin in json[3])
+		{
+			for	(var destination in json[3][origin])
+			{			
+				let flipCard = document.createElement('div');
+				let flipCardInner = document.createElement('div')
+				let flipCardFront = document.createElement('div')
+				let flipCardBack = document.createElement('div')
+
+				flipCard.classList.add('flip-card');
+				flipCard.id = origin.toLowerCase();
+				flipCardInner.classList.add('flip-card-inner');
+				flipCardFront.classList.add('flip-card-front');
+				flipCardBack.classList.add('flip-card-back');
+
+				flipCard.appendChild(flipCardInner);
+				flipCardInner.appendChild(flipCardFront);
+				flipCardInner.appendChild(flipCardBack);
+
+				var image = document.createElement("img");
+				image.src = imgUrl + origin.toLowerCase() + ".png";
+				image.width = 84;	
+				image.height = 84;
+				flipCardFront.appendChild(image);
+				
+				var imageArrow = document.createElement("img");
+				imageArrow.src = "arrow.png";
+				imageArrow.width = 16;
+				imageArrow.height = 84;
+				flipCardFront.appendChild(imageArrow);
+				
+				var imageSpecial = document.createElement("img");
+				if (destination.includes("Alolan"))
+					imageSpecial.src = imgUrlAlolan + destination.toLowerCase().split(" ")[1] + "-alolan.png";
+				else
+					imageSpecial.src = imgUrl + destination.toLowerCase() + ".png";
+					
+				// special cases
+				switch (destination) {
+					case 'Froslass':
+						imageSpecial.src = "https://img.pokemondb.net/sprites/diamond-pearl/normal/froslass.png";
+						break;
+					case 'Gallade':
+						imageSpecial.src = "https://img.pokemondb.net/sprites/diamond-pearl/normal/gallade.png";
+						break;
+					case 'Galarian Weezing':
+						imageSpecial.src = "https://img.pokemondb.net/sprites/sword-shield/normal/weezing-galarian.png";
+						break;
+					default:					
+					}
+				imageSpecial.width = 84;
+				imageSpecial.height = 84;
+				flipCardFront.appendChild(imageSpecial);
+				
+				var index = 0;
+				var evoList = [];
+				var evoPerc = [];
+				for (var evo in json[3][origin][destination])
+				{
+					evoList.push(evo);
+					evoPerc.push(json[3][origin][destination][evo]);
+				}			
+				Bubble(evoPerc, evoList);
+				for (k = 0; k < evoList.length; k++)
+				{
+					let pDiv = document.createElement('p');
+					var text = document.createTextNode(evoList[k] + " - " + evoPerc[k].toFixed(4) + "%");
+					pDiv.appendChild(text);
+					flipCardBack.appendChild(pDiv);
+					index = index +1;
+					if (index >= 11) { break; }
+				}
+				
+				document.body.appendChild(flipCard)
+				
+			}
+		}
+		var divs = document.getElementsByClassName('flip-card');
+		
+		for (i = 0; i < divs.length; i++) {
+			listitems.push(divs.item(i));
+		}
 	}	
-	document.body.appendChild(flipCard)
-}
-var divs = document.getElementsByClassName('flip-card');
+	function loadJSON(callback) 
+	{
+		var xobj = new XMLHttpRequest();
+		xobj.overrideMimeType("application/json");
+		xobj.open('GET', 'https://raw.githubusercontent.com/MynSzx/mynszx.github.io/main/evodata.json', true);
+		xobj.onreadystatechange = function () 
+		{
+			if (xobj.readyState == 4 && xobj.status == "200") 
+			{
+				callback(xobj.responseText);
+			}
+		}
+		xobj.send(null);
+	}
+
+
+const imgUrl = "https://img.pokemondb.net/sprites/ruby-sapphire/normal/";
+const imgUrlAlolan = "https://img.pokemondb.net/sprites/sword-shield/normal/";
 const listitems = [];
-for (i = 0; i < divs.length; i++) {
-	listitems.push(divs.item(i));
-}
+
 function OnSort(el)
 {
 	for (i = 0; i < listitems.length; i++) {
@@ -354,6 +228,29 @@ function OnSort(el)
 	}
 }
 
+function Bubble(perc, evo)
+{
+	var done = false;
+	while (!done) 
+	{
+		done = true;
+		for (var i = 1; i < perc.length; i += 1) 
+		{
+			if (perc[i - 1] < perc[i]) 
+			{
+				done = false;
+				var tmp = perc[i - 1];
+				var tmp2 = evo[i - 1];
+				
+				perc[i - 1] = perc[i];
+				evo[i-1] = evo[i];
+				
+				perc[i] = tmp;
+				evo[i] = tmp2;
+			}
+		}
+	}
+}
 </script>
 
 </body>
