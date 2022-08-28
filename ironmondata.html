@@ -118,7 +118,7 @@ img
 		for (var origin in json[3])
 		{
 			for	(var destination in json[3][origin])
-			{			
+			{		
 				let flipCard = document.createElement('div');
 				let flipCardInner = document.createElement('div')
 				let flipCardFront = document.createElement('div')
@@ -140,34 +140,23 @@ img
 				image.height = 84;
 				flipCardFront.appendChild(image);
 				
-				var imageArrow = document.createElement("img");
-				imageArrow.src = "arrow.png";
-				imageArrow.width = 16;
-				imageArrow.height = 84;
-				flipCardFront.appendChild(imageArrow);
 				
-				var imageSpecial = document.createElement("img");
-				if (destination.includes("Alolan"))
-					imageSpecial.src = imgUrlAlolan + destination.toLowerCase().split(" ")[1] + "-alolan.png";
-				else
+				
+				const stoneEvol = origin.includes("Eevee") || origin.includes("Gloom") || origin.includes("Slowpoke") || origin.includes("Poliwhirl") || origin.includes("Wurmple") || origin.includes("Tyrogue") || origin.includes("Clamperl");
+				if (stoneEvol)
+				{
+					var imageArrow = document.createElement("img");
+					imageArrow.src = "arrow.png";
+					imageArrow.width = 16;
+					imageArrow.height = 84;
+					flipCardFront.appendChild(imageArrow);
+				
+					var imageSpecial = document.createElement("img");
 					imageSpecial.src = imgUrl + destination.toLowerCase() + ".png";
-					
-				// special cases
-				switch (destination) {
-					case 'Froslass':
-						imageSpecial.src = "https://img.pokemondb.net/sprites/diamond-pearl/normal/froslass.png";
-						break;
-					case 'Gallade':
-						imageSpecial.src = "https://img.pokemondb.net/sprites/diamond-pearl/normal/gallade.png";
-						break;
-					case 'Galarian Weezing':
-						imageSpecial.src = "https://img.pokemondb.net/sprites/sword-shield/normal/weezing-galarian.png";
-						break;
-					default:					
-					}
-				imageSpecial.width = 84;
-				imageSpecial.height = 84;
-				flipCardFront.appendChild(imageSpecial);
+					imageSpecial.width = 84;
+					imageSpecial.height = 84;
+					flipCardFront.appendChild(imageSpecial);
+				}			
 				
 				var index = 0;
 				var evoList = [];
