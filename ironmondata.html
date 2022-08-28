@@ -8,21 +8,24 @@ body
 	background-color:black;
 	color:white;
 }
+
 div
 {
 	display:inline-block;
 	border-radius: 25px;
 }
+
 img
 {
  margin-top:50px;
 }
-.flip-card {
+
+.flip-card 
+{
   background-color: transparent;
   width: 200px;
   height: 200px;
-  border: 3px solid transparent;
-  
+  border: 3px solid transparent; 
   perspective: 1000px;
 }
 
@@ -36,30 +39,39 @@ img
   transform-style: preserve-3d;
 }
 
-.flip-card:hover .flip-card-inner {
+.flip-card:hover .flip-card-inner 
+{
   transform: rotateY(180deg);
 }
 
-.flip-card-front, .flip-card-back {
+.flip-card-front, .flip-card-back 
+{
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 100%; 
+  height:100%;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
-.flip-card-front {
+.flip-card-front 
+{
   background-color: #F4F6F7;
   color: black;
   text-align:center;
 }
 
-.flip-card-back {
+.flip-card-back 
+{
   text-align:center;
   background-color: gray;
   color: white;
   transform: rotateY(180deg);
+  overflow:scroll;
+  scrollbar-size: 2px;
+  overflow-x: hidden; 
 }
+
+.flip-card-back-text {} 
 
 .letters
 {
@@ -71,9 +83,17 @@ img
 	line-height: 50px;
 	border-radius: 25px;
 }
-.letters:hover {
+
+.letters:hover 
+{
   background-color: RoyalBlue;
 }
+
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: RoyalBlue; }
+::-webkit-scrollbar-thumb:hover { background: #555; }
+
 </style>
 </head>
 
@@ -111,82 +131,8 @@ img
 <button class="letters" type="button" onclick="OnSort(this)" id="z"> Z </button>
 </div>
 <br>
-<script>
-	function readJSON(response)
-	{
-		var json = JSON.parse(response);
-		for (var origin in json[3])
-		{
-			for	(var destination in json[3][origin])
-			{		
-				let flipCard = document.createElement('div');
-				let flipCardInner = document.createElement('div')
-				let flipCardFront = document.createElement('div')
-				let flipCardBack = document.createElement('div')
-
-				flipCard.classList.add('flip-card');
-				flipCard.id = origin.toLowerCase();
-				flipCardInner.classList.add('flip-card-inner');
-				flipCardFront.classList.add('flip-card-front');
-				flipCardBack.classList.add('flip-card-back');
-
-				flipCard.appendChild(flipCardInner);
-				flipCardInner.appendChild(flipCardFront);
-				flipCardInner.appendChild(flipCardBack);
-
-				var image = document.createElement("img");
-				image.src = imgUrl + origin.toLowerCase() + ".png";
-				image.width = 84;	
-				image.height = 84;
-				flipCardFront.appendChild(image);
-				
-				
-				
-				const stoneEvol = origin.includes("Eevee") || origin.includes("Gloom") || origin.includes("Slowpoke") || origin.includes("Poliwhirl") || origin.includes("Wurmple") || origin.includes("Tyrogue") || origin.includes("Clamperl");
-				if (stoneEvol)
-				{
-					var imageArrow = document.createElement("img");
-					imageArrow.src = "arrow.png";
-					imageArrow.width = 16;
-					imageArrow.height = 84;
-					flipCardFront.appendChild(imageArrow);
-				
-					var imageSpecial = document.createElement("img");
-					imageSpecial.src = imgUrl + destination.toLowerCase() + ".png";
-					imageSpecial.width = 84;
-					imageSpecial.height = 84;
-					flipCardFront.appendChild(imageSpecial);
-				}			
-				
-				var index = 0;
-				var evoList = [];
-				var evoPerc = [];
-				for (var evo in json[3][origin][destination])
-				{
-					evoList.push(evo);
-					evoPerc.push(json[3][origin][destination][evo]);
-				}			
-				Bubble(evoPerc, evoList);
-				for (k = 0; k < evoList.length; k++)
-				{
-					let pDiv = document.createElement('p');
-					var text = document.createTextNode(evoList[k] + " - " + evoPerc[k].toFixed(4) + "%");
-					pDiv.appendChild(text);
-					flipCardBack.appendChild(pDiv);
-					index = index +1;
-					if (index >= 11) { break; }
-				}
-				
-				document.body.appendChild(flipCard)
-				
-			}
-		}
-		var divs = document.getElementsByClassName('flip-card');
-		
-		for (i = 0; i < divs.length; i++) {
-			listitems.push(divs.item(i));
-		}
-	}	
+<script>	
+	// load data
 	function loadJSON(callback) 
 	{
 		var xobj = new XMLHttpRequest();
@@ -201,15 +147,107 @@ img
 		}
 		xobj.send(null);
 	}
+	
+	// process the data
+	function readJSON(response)
+	{
+		var json = JSON.parse(response);
+		for (var origin in json[3])
+		{
+			for	(var destination in json[3][origin])
+			{		
+				// create divs
+				let flipCard = document.createElement('div');
+				let flipCardInner = document.createElement('div')
+				let flipCardFront = document.createElement('div')
+				let flipCardBack = document.createElement('div')
+				let flipCardBackText = document.createElement('div')
 
+				// assign classes
+				flipCard.classList.add('flip-card');
+				flipCard.id = origin.toLowerCase();
+				flipCardInner.classList.add('flip-card-inner');
+				flipCardFront.classList.add('flip-card-front');
+				flipCardBack.classList.add('flip-card-back');
+				flipCardBackText.classList.add('flip-card-back-text');
+				
+				// divs trees
+				flipCard.appendChild(flipCardInner);
+				flipCardInner.appendChild(flipCardFront);
+				flipCardInner.appendChild(flipCardBack);
+				flipCardBack.appendChild(flipCardBackText);
+
+				// main pokemon image
+				var image = document.createElement("img");
+				image.src = imgUrl + origin.toLowerCase() + ".png";
+				image.width = 84;	
+				image.height = 84;
+				flipCardFront.appendChild(image);
+				
+				//flipCardBack.addEventListener("click", LockCard);
+			
+				// does it have different evos?
+				const stoneEvol = origin.includes("Eevee") || origin.includes("Gloom") || origin.includes("Slowpoke") || origin.includes("Poliwhirl") || origin.includes("Wurmple") || origin.includes("Tyrogue") || origin.includes("Clamperl");
+				
+				// yes?
+				if (stoneEvol)
+				{
+					// special evo
+					var imageArrow = document.createElement("img");
+					imageArrow.src = "arrow.png";
+					imageArrow.width = 16;
+					imageArrow.height = 84;
+					flipCardFront.appendChild(imageArrow);
+				
+					var imageSpecial = document.createElement("img");
+					imageSpecial.src = imgUrl + destination.toLowerCase() + ".png";
+					imageSpecial.width = 84;
+					imageSpecial.height = 84;
+					flipCardFront.appendChild(imageSpecial);
+				}			
+				
+				// create evo list for sorting later
+				var evoList = [];
+				var evoPerc = [];
+				for (var evo in json[3][origin][destination])
+				{
+					evoList.push(evo);
+					evoPerc.push(json[3][origin][destination][evo]);
+				}		
+
+				// sort % in order
+				Bubble(evoPerc, evoList);
+				for (k = 0; k < evoList.length; k++)
+				{
+					// add div containing the %
+					let pDiv = document.createElement('p');
+					var text = document.createTextNode(evoList[k] + " - " + evoPerc[k].toFixed(5) + "%");
+					pDiv.appendChild(text);
+					flipCardBackText.appendChild(pDiv);
+				}	
+
+				// add everything to the HTML
+				document.body.appendChild(flipCard)
+				
+			}
+		}
+		// grab every main divs, and make a list for easy filtering
+		var divs = document.getElementsByClassName('flip-card');	
+		for (i = 0; i < divs.length; i++) 
+		{
+			listitems.push(divs.item(i));
+		}
+	}	
 
 const imgUrl = "https://img.pokemondb.net/sprites/ruby-sapphire/normal/";
-const imgUrlAlolan = "https://img.pokemondb.net/sprites/sword-shield/normal/";
 const listitems = [];
+
+//function LockCard() { console.log(this.className); }
 
 function OnSort(el)
 {
-	for (i = 0; i < listitems.length; i++) {
+	for (i = 0; i < listitems.length; i++) 
+	{
 		if (listitems[i].id[0] != el.id && el.id != 0)
 			listitems[i].style = "display: none;";
 		else
