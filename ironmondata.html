@@ -1,284 +1,47 @@
-<!DOCTYPE html>
 <html>
 <head>
 <title>Pokemons Evo Data</title>
-<style>
-body
-{
-	background-color:black;
-	color:white;
-}
-
-div
-{
-	display:inline-block;
-	border-radius: 25px;
-}
-
-img
-{
- margin-top:50px;
-}
-
-.flip-card 
-{
-  background-color: transparent;
-  width: 200px;
-  height: 200px;
-  border: 3px solid transparent; 
-  perspective: 1000px;
-}
-
-.flip-card-inner 
-{
-  position: relative;
-  width: 100%;
-  height: 100%;
-  line-height: 1px;
-  transition: transform 0.2s;
-  transform-style: preserve-3d;
-}
-
-.flip-card:hover .flip-card-inner 
-{
-  transform: rotateY(180deg);
-}
-
-.flip-card-front, .flip-card-back 
-{
-  position: absolute;
-  width: 100%; 
-  height:100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-.flip-card-front 
-{
-  background-color: #F4F6F7;
-  color: black;
-  text-align:center;
-}
-
-.flip-card-back 
-{
-  text-align:center;
-  background-color: gray;
-  color: white;
-  transform: rotateY(180deg);
-  overflow:scroll;
-  scrollbar-size: 2px;
-  overflow-x: hidden; 
-}
-
-.flip-card-back-text {} 
-
-.letters
-{
-	height:50px;
-	width:50px;
-	background-color:white;
-	text-align:center;
-	vertical-align:middle;
-	line-height: 50px;
-	border-radius: 25px;
-}
-
-.letters:hover 
-{
-  background-color: RoyalBlue;
-}
-
-::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: #f1f1f1; }
-::-webkit-scrollbar-thumb { background: RoyalBlue; }
-::-webkit-scrollbar-thumb:hover { background: #555; }
-
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
-
 
 <body onload="loadJSON(readJSON)">
 <p> Credits to <b>Brdy</b>, <b>Harkenn_</b> for the data, and <b>Valhallan597</b> for the idea. </p>
+  <select name="gens" id="gens" onchange="changeGeneration()">
+    <option value="generation1">Generation 1</option>
+    <option value="generation2">Generation 2</option>
+    <option value="generation3" selected>Generation 3</option>
+    <option value="generation4">Generation 4</option>
+  </select> 
+<div> 
+<button class="letters" type="button" onclick="Filter(this)" id="0"> ALL </button>
+<button class="letters" type="button" onclick="Filter(this)" id="a"> A </button>
+<button class="letters" type="button" onclick="Filter(this)" id="b"> B </button>
+<button class="letters" type="button" onclick="Filter(this)" id="c"> C </button>
+<button class="letters" type="button" onclick="Filter(this)" id="d"> D </button>
+<button class="letters" type="button" onclick="Filter(this)" id="e"> E </button>
+<button class="letters" type="button" onclick="Filter(this)" id="f"> F </button>
+<button class="letters" type="button" onclick="Filter(this)" id="g"> G </button>
+<button class="letters" type="button" onclick="Filter(this)" id="h"> H </button>
+<button class="letters" type="button" onclick="Filter(this)" id="i"> I </button>
+<button class="letters" type="button" onclick="Filter(this)" id="j"> J </button>
+<button class="letters" type="button" onclick="Filter(this)" id="k"> K </button>
+<button class="letters" type="button" onclick="Filter(this)" id="l"> L </button>
+<button class="letters" type="button" onclick="Filter(this)" id="m"> M </button>
+<button class="letters" type="button" onclick="Filter(this)" id="n"> N </button>
+<button class="letters" type="button" onclick="Filter(this)" id="o"> O </button>
+<button class="letters" type="button" onclick="Filter(this)" id="p"> P </button>
+<button class="letters" type="button" onclick="Filter(this)" id="q"> Q </button>
+<button class="letters" type="button" onclick="Filter(this)" id="r"> R </button>
+<button class="letters" type="button" onclick="Filter(this)" id="s"> S </button>
+<button class="letters" type="button" onclick="Filter(this)" id="t"> T </button>
+<button class="letters" type="button" onclick="Filter(this)" id="u"> U </button>
+<button class="letters" type="button" onclick="Filter(this)" id="v"> V </button>
+<button class="letters" type="button" onclick="Filter(this)" id="w"> W </button>
+<button class="letters" type="button" onclick="Filter(this)" id="x"> X </button>
+<button class="letters" type="button" onclick="Filter(this)" id="y"> Y </button>
+<button class="letters" type="button" onclick="Filter(this)" id="z"> Z </button>
+</div><br>
 
-<div>
-<button class="letters" type="button" onclick="OnSort(this)" id="0"> ALL </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="a"> A </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="b"> B </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="c"> C </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="d"> D </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="e"> E </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="f"> F </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="g"> G </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="h"> H </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="i"> I </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="j"> J </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="k"> K </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="l"> L </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="m"> M </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="n"> N </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="o"> O </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="p"> P </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="q"> Q </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="r"> R </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="s"> S </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="t"> T </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="u"> U </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="v"> V </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="w"> W </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="x"> X </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="y"> Y </button>
-<button class="letters" type="button" onclick="OnSort(this)" id="z"> Z </button>
-</div>
-<br>
-<script>	
-	// load data
-	function loadJSON(callback) 
-	{
-		var xobj = new XMLHttpRequest();
-		xobj.overrideMimeType("application/json");
-		xobj.open('GET', 'https://raw.githubusercontent.com/MynSzx/mynszx.github.io/main/evodata.json', true);
-		xobj.onreadystatechange = function () 
-		{
-			if (xobj.readyState == 4 && xobj.status == "200") 
-			{
-				callback(xobj.responseText);
-			}
-		}
-		xobj.send(null);
-	}
-	
-	// process the data
-	function readJSON(response)
-	{
-		var json = JSON.parse(response);
-		for (var origin in json[3])
-		{
-			for	(var destination in json[3][origin])
-			{		
-				// create divs
-				let flipCard = document.createElement('div');
-				let flipCardInner = document.createElement('div')
-				let flipCardFront = document.createElement('div')
-				let flipCardBack = document.createElement('div')
-				let flipCardBackText = document.createElement('div')
-
-				// assign classes
-				flipCard.classList.add('flip-card');
-				flipCard.id = origin.toLowerCase();
-				flipCardInner.classList.add('flip-card-inner');
-				flipCardFront.classList.add('flip-card-front');
-				flipCardBack.classList.add('flip-card-back');
-				flipCardBackText.classList.add('flip-card-back-text');
-				
-				// divs trees
-				flipCard.appendChild(flipCardInner);
-				flipCardInner.appendChild(flipCardFront);
-				flipCardInner.appendChild(flipCardBack);
-				flipCardBack.appendChild(flipCardBackText);
-
-				// main pokemon image
-				var image = document.createElement("img");
-				image.src = imgUrl + origin.toLowerCase() + ".png";
-				image.width = 84;	
-				image.height = 84;
-				flipCardFront.appendChild(image);
-				
-				//flipCardBack.addEventListener("click", LockCard);
-			
-				// does it have different evos?
-				const stoneEvol = origin.includes("Eevee") || origin.includes("Gloom") || origin.includes("Slowpoke") || origin.includes("Poliwhirl") || origin.includes("Wurmple") || origin.includes("Tyrogue") || origin.includes("Clamperl");
-				
-				// yes?
-				if (stoneEvol)
-				{
-					// special evo
-					var imageArrow = document.createElement("img");
-					imageArrow.src = "arrow.png";
-					imageArrow.width = 16;
-					imageArrow.height = 84;
-					flipCardFront.appendChild(imageArrow);
-				
-					var imageSpecial = document.createElement("img");
-					imageSpecial.src = imgUrl + destination.toLowerCase() + ".png";
-					imageSpecial.width = 84;
-					imageSpecial.height = 84;
-					flipCardFront.appendChild(imageSpecial);
-				}			
-				
-				// create evo list for sorting later
-				var evoList = [];
-				var evoPerc = [];
-				for (var evo in json[3][origin][destination])
-				{
-					evoList.push(evo);
-					evoPerc.push(json[3][origin][destination][evo]);
-				}		
-
-				// sort % in order
-				Bubble(evoPerc, evoList);
-				for (k = 0; k < evoList.length; k++)
-				{
-					// add div containing the %
-					let pDiv = document.createElement('p');
-					var text = document.createTextNode(evoList[k] + " - " + evoPerc[k].toFixed(5) + "%");
-					pDiv.appendChild(text);
-					flipCardBackText.appendChild(pDiv);
-				}	
-
-				// add everything to the HTML
-				document.body.appendChild(flipCard)
-				
-			}
-		}
-		// grab every main divs, and make a list for easy filtering
-		var divs = document.getElementsByClassName('flip-card');	
-		for (i = 0; i < divs.length; i++) 
-		{
-			listitems.push(divs.item(i));
-		}
-	}	
-
-const imgUrl = "https://img.pokemondb.net/sprites/ruby-sapphire/normal/";
-const listitems = [];
-
-//function LockCard() { console.log(this.className); }
-
-function OnSort(el)
-{
-	for (i = 0; i < listitems.length; i++) 
-	{
-		if (listitems[i].id[0] != el.id && el.id != 0)
-			listitems[i].style = "display: none;";
-		else
-			listitems[i].style = "";
-	}
-}
-
-function Bubble(perc, evo)
-{
-	var done = false;
-	while (!done) 
-	{
-		done = true;
-		for (var i = 1; i < perc.length; i += 1) 
-		{
-			if (perc[i - 1] < perc[i]) 
-			{
-				done = false;
-				var tmp = perc[i - 1];
-				var tmp2 = evo[i - 1];
-				
-				perc[i - 1] = perc[i];
-				evo[i-1] = evo[i];
-				
-				perc[i] = tmp;
-				evo[i] = tmp2;
-			}
-		}
-	}
-}
-</script>
-
+<script src="evoreader.js"></script>
 </body>
 </html>
