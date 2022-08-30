@@ -1,18 +1,18 @@
 body
 {
-	background-color:black;
-	color:white;
+  background-color:black;
+  color:white;
 }
 
 div
 {
-	display:inline-block;
-	border-radius: 25px;
+  display:inline-block;
+  border-radius: 25px;
 }
 
 img
 {
- margin-top:50px;
+  margin-top:50px;
 }
 
 .flip-card 
@@ -39,6 +39,14 @@ img
   transform: rotateY(180deg);
 }
 
+.flip-card:hover .flip-card-back
+{
+  overflow:scroll;
+  scrollbar-size: 2px;
+  overflow-x: hidden; 
+}
+
+
 .flip-card-front, .flip-card-back 
 {
   position: absolute;
@@ -53,6 +61,7 @@ img
   background-color: #F4F6F7;
   color: black;
   text-align:center;
+  transform: translate3d(0, 0, 0);
 }
 
 .flip-card-back 
@@ -61,22 +70,20 @@ img
   background-color: gray;
   color: white;
   transform: rotateY(180deg);
-  overflow:scroll;
-  scrollbar-size: 2px;
-  overflow-x: hidden; 
+  overflow:hidden;
 }
 
 .flip-card-back-text {} 
 
 .letters
 {
-	height:50px;
-	width:50px;
-	background-color:white;
-	text-align:center;
-	vertical-align:middle;
-	line-height: 50px;
-	border-radius: 25px;
+  height:50px;
+  width:50px;
+  background-color:white;
+  text-align:center;
+  vertical-align:middle;
+  line-height: 50px;
+  border-radius: 25px;
 }
 
 .letters:hover 
@@ -86,11 +93,11 @@ img
 
 .loading 
 {
-	font-size:50px;
-	position:absolute;
-	width:90%;
-	overflow-x:hidden;
-	text-align:center;
+  font-size:50px;
+  position:absolute;
+  width:90%;
+  overflow-x:hidden;
+  text-align:center;
 }
 
 ::-webkit-scrollbar { width: 10px; }
