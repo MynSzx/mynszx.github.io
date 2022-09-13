@@ -205,6 +205,11 @@ function readJSON(response)
 			if (theVal[v] == "") break;			
 			var pokemon = theVal[v].split('-')[0];
 			var perc = parseFloat(theVal[v].split('-')[1]);
+			if (theVal[v].includes("Porygon-Z"))
+			{
+				pokemon = theVal[v].split('-')[0] + theVal[v].split('-')[1];
+				perc = parseFloat(theVal[v].split('-')[2]);
+			}	
 			evoList.push(pokemon);
 			percList.push(perc);
 		}
