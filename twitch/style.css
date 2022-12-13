@@ -1,0 +1,160 @@
+body 
+{
+	background: white;
+}
+.drop_container 
+{
+	display:flex; 
+	justify-content:center;
+	margin-top: 2px;
+}
+
+.uploadOuter 
+{
+	text-align: center;
+	padding: 20px;
+	color: white;
+}
+
+.dragBox 
+{
+	min-width: 128px;
+	height: 128px;
+	position: relative;
+	text-align: center;
+	font-weight: bold;
+	line-height: 128px;
+	color: #999;
+	border: 2px dashed #ccc;
+	display: inline-block;
+	transition: transform 0.3s;
+}
+
+input[type="file"] 
+{
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	opacity: 0;
+	top: 0;
+	left: 0;
+}
+.draging 
+{
+	transform: scale(1.1);
+}
+
+.time_w
+{
+	color:black;
+	font-size:15;
+	font-weight:bold;
+}
+.time_b
+{
+	color:gray;
+	font-size:15;
+	font-weight:bold;
+}
+.username
+{
+	margin-left:5px;
+	margin-right:5px;
+	font-size: 16px;
+	font-weight:bold;
+}
+
+.line
+{
+	display:flex;
+	height:32px;
+	width:100%;
+	align-items:center;
+	justify-content:center;
+}
+.tchat_container
+{
+	border:2px solid;
+	border-radius:10px;
+}
+
+.discord_b
+{
+	background-color:#2C2F33;
+}
+.avatar 
+{
+	height: 36px;
+	width: 36px;
+	background-color: red;
+	border-radius: 100%;
+}
+
+.preview
+{
+	float:left;
+	border:2px solid #ccc;
+	border-radius:10px;
+	color:black;
+	width:40%;
+	font-size:30;
+	display:block;
+	text-align:center;
+}
+
+.emote_container
+{
+	height:140px;
+}
+
+.t_112
+{
+	width:112px;
+	height:112px;
+}
+.t_96
+{
+	width:96px;
+	height:96px;
+}
+.t_56
+{
+	width:56px;
+	height:56px;
+}
+.t_48
+{
+	width:48px;
+	height:48px;
+}
+.t_28
+{
+	width:28px;
+	height:28px;
+}
+.t_22
+{
+	width:22px;
+	height:22px;
+}
+
+.tv_128
+{
+	height:128px;
+	max-width:256px;
+}
+.tv_96
+{
+	height:96px;
+	max-width:192px;
+}
+.tv_64
+{
+	height:64px;
+	max-width:128px;
+}
+.tv_32
+{
+	height:32px;
+	max-width:64px;
+}
