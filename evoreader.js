@@ -38,8 +38,8 @@ function loadJSON(callback)
 	xobj.send(null);
 }
 
-var genStart = 2869;
-var genEnd = 7447;
+var genStart = 2904;
+var genEnd = 7482;
 var listDivs = [];
 
 function changeGeneration()
