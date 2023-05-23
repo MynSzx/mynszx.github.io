@@ -48,19 +48,19 @@ function changeGeneration()
 	{
 		case "generation1": 
 			genStart = 0;
-			genEnd = 811;
+			genEnd = 846;
 			break;
 		case "generation2": 
-			genStart = 812;
-			genEnd = 2868;
+			genStart = 847;
+			genEnd = 2903;
 			break;
 		case "generation3": 
-			genStart = 2869;
-			genEnd = 7447;
+			genStart = 2904;
+			genEnd = 7482;
 			break;
 		case "generation4": 
-			genStart = 7448;
-			genEnd = 14784
+			genStart = 7483;
+			genEnd = 14818
 			break;
 		default: break;
 	}
